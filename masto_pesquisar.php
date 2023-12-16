@@ -1,6 +1,5 @@
 <?php
 error_reporting(0);
-
 include('menu.php');
 session_start();
 include_once 'conexao.php';

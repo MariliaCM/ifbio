@@ -1,9 +1,8 @@
 <?php
+error_reporting(0);
 include('menu.php');
 session_start();
 include_once 'conexao.php';
-error_reporting(0);
-
 if (!empty($_GET['search'])) {
   $data = $_GET['search'];
   $sql = "SELECT idinventario, nomedominio, nomereino, nomefilo, nomeclasse, nomeordem, nomefamilia, nomegenero, nomeespecie, nomeflora, latitude, longitude, altura, diametro, volume from dominio inner join reino on iddominio=fkreino inner join filo on idreino=fkfilo inner join classe on idfilo=fkclasse inner join ordem on idclasse=fkordem inner join familia on idordem=fkfamilia inner join genero on idfamilia=fkgenero inner join especie on idgenero=fkespecie inner join flora on idespecie=fkflora inner join inventario on idflora=fkinventario WHERE nomedominio LIKE '%$data%' or nomereino LIKE '%$data%' or nomefilo LIKE '%$data%' or nomeclasse LIKE '%$data%' or nomeordem LIKE '%$data%' or nomefamilia LIKE '%$data%' or nomegenero LIKE '%$data%' or nomeespecie LIKE '%$data%' or nomeflora LIKE '%$data%' or latitude LIKE '%$data%' or longitude LIKE '%$data%' or altura LIKE '%$data%' or diametro LIKE '%$data%' or volume LIKE '%$data%' ORDER BY idinventario ASC;";

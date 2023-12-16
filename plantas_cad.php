@@ -1,7 +1,7 @@
 <?php
+error_reporting(0);
 include('menu.php');
 session_start();
-error_reporting(0);
 
 function alerta($type, $title, $msg)
 {

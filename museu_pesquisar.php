@@ -1,8 +1,7 @@
 <?php
+error_reporting(0);
 include('menu.php');
 session_start();
-error_reporting(0);
-
 include_once 'conexao.php';
 if (!empty($_GET['search'])) {
   $data = $_GET['search'];

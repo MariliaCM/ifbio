@@ -1,9 +1,8 @@
 <?php
+error_reporting(0);
 include('menu.php');
 session_start();
 include_once 'conexao.php';
-error_reporting(0);
-
 if (!empty($_GET['search'])) {
   $data = $_GET['search'];
   $sql = "SELECT iddaninha, nomedominio, nomereino, nomefilo, nomeclasse, nomeordem, nomefamilia, nomegenero, nomeespecie, nomeflora, problema from dominio inner join reino on iddominio=fkreino inner join filo on idreino=fkfilo inner join classe on idfilo=fkclasse inner join ordem on idclasse=fkordem inner join familia on idordem=fkfamilia inner join genero on idfamilia=fkgenero inner join especie on idgenero=fkespecie inner join flora on idespecie=fkflora inner join daninha on idflora=fkdaninha WHERE nomedominio LIKE '%$data%' or nomereino LIKE '%$data%' or nomefilo LIKE '%$data%' or nomeclasse LIKE '%$data%' or nomeordem LIKE '%$data%' or nomefamilia LIKE '%$data%' or nomegenero LIKE '%$data%' or nomeespecie LIKE '%$data%' or nomeflora LIKE '%$data%' or problema LIKE '%$data%' ORDER BY iddaninha ASC;";

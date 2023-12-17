@@ -58,6 +58,10 @@ if ($btnCadErvas) {
     $resultado_flora = mysqli_query($conn, $sqlflora);
     $numero_linhasflora = mysqli_num_rows($resultado_flora);
 
+    $sqldaninha = "SELECT idflora, fkdaninha FROM flora, daninha WHERE nomeflora='" . $nomeflora . "' AND idflora=fkdaninha";
+    $resultado_daninha = mysqli_query($conn, $sqldaninha);
+    $numero_linhasdaninha = mysqli_num_rows($resultado_daninha);
+
     if (($numero_linhasf == 0)) {
         $resultado = "INSERT INTO filo(nomefilo,fkfilo) VALUES ('$nomefilo','6');";
         $r = mysqli_query($conn, $resultado);
@@ -86,15 +90,16 @@ if ($btnCadErvas) {
     if (($numero_linhase == 0)) {
         $resultado = "INSERT INTO especie(nomeespecie,fkespecie) VALUES ('$nomeespecie',(select idgenero from genero where nomegenero='" . $nomegenero . "'));";
         $r = mysqli_query($conn, $resultado);
-
     }
 
     if (($numero_linhasflora == 0)) {
         $resultado = "INSERT INTO flora(nomeflora,fkflora) VALUES ('$nomeflora',(select idespecie from especie where nomeespecie='" . $nomeespecie . "'));";
         $r = mysqli_query($conn, $resultado);
+    }
 
-        $resultado1 = "INSERT INTO daninha(problema,fkdaninha) VALUES ('$problema',(select idflora from flora where nomeflora='" . $nomeflora . "'));";
-        $r1 = mysqli_query($conn, $resultado1);
+    if (($numero_linhasdaninha == 0)) {
+        $resultado = "INSERT INTO daninha(problema,fkdaninha) VALUES ('$problema',(select idflora from flora where nomeflora='" . $nomeflora . "'));";
+        $r = mysqli_query($conn, $resultado);
 
         header("Location: ervas_cad.php?erro=2");
     } else {

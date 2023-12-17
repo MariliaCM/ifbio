@@ -59,6 +59,10 @@ if ($btnCadAvifauna) {
     $resultado_fauna = mysqli_query($conn, $sqlfauna);
     $numero_linhasfauna = mysqli_num_rows($resultado_fauna);
 
+    $sqlave = "SELECT idfauna, fkavifauna FROM fauna, avifauna WHERE nomefauna='" . $nomefauna . "' AND idfauna=fkavifauna";
+    $resultado_ave = mysqli_query($conn, $sqlave);
+    $numero_linhasave = mysqli_num_rows($resultado_ave);
+
     if (($numero_linhasf == 0)) {
         $resultado = "INSERT INTO filo(nomefilo,fkfilo) VALUES ('$nomefilo','1');";
         $r = mysqli_query($conn, $resultado);
@@ -87,15 +91,16 @@ if ($btnCadAvifauna) {
     if (($numero_linhase == 0)) {
         $resultado = "INSERT INTO especie(nomeespecie,fkespecie) VALUES ('$nomeespecie',(select idgenero from genero where nomegenero='" . $nomegenero . "'));";
         $r = mysqli_query($conn, $resultado);
-
     }
 
     if (($numero_linhasfauna == 0)) {
         $resultado = "INSERT INTO fauna(nomefauna,fkfauna) VALUES ('$nomefauna',(select idespecie from especie where nomeespecie='" . $nomeespecie . "'));";
         $r = mysqli_query($conn, $resultado);
+    }
 
-        $resultado1 = "INSERT INTO avifauna(habitat,habitoalimentar,fkavifauna) VALUES ('$habitat', '$habitoalimentar',(select idfauna from fauna where nomefauna='" . $nomefauna . "'));";
-        $r1 = mysqli_query($conn, $resultado1);
+    if (($numero_linhasave == 0)) {
+        $resultado = "INSERT INTO avifauna(habitat,habitoalimentar,fkavifauna) VALUES ('$habitat', '$habitoalimentar',(select idfauna from fauna where nomefauna='" . $nomefauna . "'));";
+        $r = mysqli_query($conn, $resultado);
 
         header("Location: avifauna_cad.php?erro=2");
     } else {

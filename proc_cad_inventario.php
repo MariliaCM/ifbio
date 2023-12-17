@@ -61,7 +61,7 @@ if ($btnCadInventario) {
     $resultado_especie = mysqli_query($conn, $sqle);
     $numero_linhase = mysqli_num_rows($resultado_especie);
 
-    $sqlflora = "SELECT idflora FROM flora WHERE nomeflora='" . $nomeflora . "'";
+    $sqlflora = "SELECT idflora, fkinventario FROM flora, inventario WHERE nomeflora='" . $nomeflora . "' AND idflora=fkinventario";
     $resultado_flora = mysqli_query($conn, $sqlflora);
     $numero_linhasflora = mysqli_num_rows($resultado_flora);
 
@@ -93,15 +93,16 @@ if ($btnCadInventario) {
     if (($numero_linhase == 0)) {
         $resultado = "INSERT INTO especie(nomeespecie,fkespecie) VALUES ('$nomeespecie',(select idgenero from genero where nomegenero='" . $nomegenero . "'));";
         $r = mysqli_query($conn, $resultado);
-
     }
 
     if (($numero_linhasflora == 0)) {
         $resultado = "INSERT INTO flora(nomeflora,fkflora) VALUES ('$nomeflora',(select idespecie from especie where nomeespecie='" . $nomeespecie . "'));";
         $r = mysqli_query($conn, $resultado);
+    }
 
-        $resultado1 = "INSERT INTO inventario(latitude, longitude, altura, diametro, volume, fkinventario) VALUES ('$latitude','$longitude','$altura','$diametro','$volume',(select idflora from flora where nomeflora='" . $nomeflora . "'));";
-        $r1 = mysqli_query($conn, $resultado1);
+    if (($numero_linhasinventario == 0)) {
+        $resultado = "INSERT INTO inventario(latitude, longitude, altura, diametro, volume, fkinventario) VALUES ('$latitude','$longitude','$altura','$diametro','$volume',(select idflora from flora where nomeflora='" . $nomeflora . "'));";
+        $r = mysqli_query($conn, $resultado);
 
         header("Location: inventario_cad.php?erro=2");
     } else {

@@ -63,6 +63,10 @@ if ($btnCadPlantas) {
     $resultado_flora = mysqli_query($conn, $sqlflora);
     $numero_linhasflora = mysqli_num_rows($resultado_flora);
 
+    $sqlplantas = "SELECT idflora, fkplantas FROM flora, plantas WHERE nomeflora='" . $nomeflora . "' AND idflora=fkplantas";
+    $resultado_plantas = mysqli_query($conn, $sqlplantas);
+    $numero_linhasplantas = mysqli_num_rows($resultado_plantas);
+
     if (($numero_linhasf == 0)) {
         $resultado = "INSERT INTO filo(nomefilo,fkfilo) VALUES ('$nomefilo','6');";
         $r = mysqli_query($conn, $resultado);
@@ -98,8 +102,12 @@ if ($btnCadPlantas) {
         $resultado = "INSERT INTO flora(nomeflora,fkflora) VALUES ('$nomeflora',(select idespecie from especie where nomeespecie='" . $nomeespecie . "'));";
         $r = mysqli_query($conn, $resultado);
 
-        $resultado1 = "INSERT INTO plantas(usopopular, contraindicacao, uso, cultivo, fkplantas) VALUES ('$usopopular','$contraindicacao','$uso','$cultivo',(select idflora from flora where nomeflora='" . $nomeflora . "'));";
-        $r1 = mysqli_query($conn, $resultado1);
+    }
+
+    if (($numero_linhasplantas == 0)) {
+
+        $resultado = "INSERT INTO plantas(usopopular, contraindicacao, uso, cultivo, fkplantas) VALUES ('$usopopular','$contraindicacao','$uso','$cultivo',(select idflora from flora where nomeflora='" . $nomeflora . "'));";
+        $r = mysqli_query($conn, $resultado);
 
         header("Location: plantas_cad.php?erro=2");
     } else {

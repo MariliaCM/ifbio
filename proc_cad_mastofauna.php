@@ -60,6 +60,10 @@ if ($btnCadMastofauna) {
     $resultado_fauna = mysqli_query($conn, $sqlfauna);
     $numero_linhasfauna = mysqli_num_rows($resultado_fauna);
 
+    $sqlmasto = "SELECT idfauna, fkmastofauna FROM fauna, mastofauna WHERE nomefauna='" . $nomefauna . "' AND idfauna=fkmastofauna";
+    $resultado_masto = mysqli_query($conn, $sqlmasto);
+    $numero_linhasmasto = mysqli_num_rows($resultado_masto);
+
     if (($numero_linhasf == 0)) {
         $resultado = "INSERT INTO filo(nomefilo,fkfilo) VALUES ('$nomefilo','1');";
         $r = mysqli_query($conn, $resultado);
@@ -94,9 +98,11 @@ if ($btnCadMastofauna) {
     if (($numero_linhasfauna == 0)) {
         $resultado = "INSERT INTO fauna(nomefauna,fkfauna) VALUES ('$nomefauna',(select idespecie from especie where nomeespecie='" . $nomeespecie . "'));";
         $r = mysqli_query($conn, $resultado);
+    }
 
-        $resultado1 = "INSERT INTO mastofauna(habitat,habitoalimentar,fkmastofauna) VALUES ('$habitat', '$habitoalimentar',(select idfauna from fauna where nomefauna='" . $nomefauna . "'));";
-        $r1 = mysqli_query($conn, $resultado1);
+    if (($numero_linhasmasto == 0)) {
+        $resultado = "INSERT INTO mastofauna(habitat,habitoalimentar,fkmastofauna) VALUES ('$habitat', '$habitoalimentar',(select idfauna from fauna where nomefauna='" . $nomefauna . "'));";
+        $r = mysqli_query($conn, $resultado);
         header("Location: mastofauna_cad.php?erro=2");
     } else {
         header("Location: mastofauna_cad.php?erro=1");

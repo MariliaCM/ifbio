@@ -61,9 +61,13 @@ if ($btnCadInventario) {
     $resultado_especie = mysqli_query($conn, $sqle);
     $numero_linhase = mysqli_num_rows($resultado_especie);
 
-    $sqlflora = "SELECT idflora, fkinventario FROM flora, inventario WHERE nomeflora='" . $nomeflora . "' AND idflora=fkinventario";
+    $sqlflora = "SELECT idflora FROM flora WHERE nomeflora='" . $nomeflora . "'";
     $resultado_flora = mysqli_query($conn, $sqlflora);
     $numero_linhasflora = mysqli_num_rows($resultado_flora);
+
+    $sqlinventario = "SELECT idflora, fkinventario FROM flora, inventario WHERE nomeflora='" . $nomeflora . "' AND idflora=fkinventario";
+    $resultado_inventario = mysqli_query($conn, $sqlinventario);
+    $numero_linhasinventario = mysqli_num_rows($resultado_inventario);
 
     if (($numero_linhasf == 0)) {
         $resultado = "INSERT INTO filo(nomefilo,fkfilo) VALUES ('$nomefilo','6');";

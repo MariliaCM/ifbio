@@ -66,6 +66,10 @@ if ($btnCadRelogio) {
     $resultado_flora = mysqli_query($conn, $sqlflora);
     $numero_linhasflora = mysqli_num_rows($resultado_flora);
 
+    $sqlplantas = "SELECT idflora, idplantas, fkplantas FROM flora, plantas WHERE nomeflora='" . $nomeflora . "' AND idflora=fkplantas";
+    $resultado_plantas = mysqli_query($conn, $sqlplantas);
+    $numero_linhasplantas = mysqli_num_rows($resultado_plantas);
+
     if (($numero_linhasf == 0)) {
         $resultado = "INSERT INTO filo(nomefilo,fkfilo) VALUES ('$nomefilo','6');";
         $r = mysqli_query($conn, $resultado);
@@ -98,9 +102,15 @@ if ($btnCadRelogio) {
     }
 
     if (($numero_linhasflora == 0)) {
-        $resultado = "INSERT INTO flora(nomeflora,fkflora) VALUES ('$nomeflora',(select idespecie from especie where nomeespecie='" . $nomeespecie . "'));
-    INSERT INTO plantas(usopopular, contraindicacao, uso, cultivo, fkplantas) VALUES ('$usopopular','$contraindicacao','$uso','$cultivo',(select idflora from flora where nomeflora='" . $nomeflora . "'));
-    INSERT INTO relogio(acao, indicacao, fkrelogio) VALUES ('$acao','$indicacao',(select idplantas from plantas, flora where fkplantas=idflora and nomeflora='" . $nomeflora . "'));";
+        $resultado = "INSERT INTO flora(nomeflora,fkflora) VALUES ('$nomeflora',(select idespecie from especie where nomeespecie='" . $nomeespecie . "'));";
+        $r = mysqli_query($conn, $resultado);
+
+    }
+
+    if (($numero_linhasplantas == 0)) {
+    
+        $resultado = "INSERT INTO plantas(usopopular, contraindicacao, uso, cultivo, fkplantas) VALUES ('$usopopular','$contraindicacao','$uso','$cultivo',(select idflora from flora where nomeflora='" . $nomeflora . "'));
+        INSERT INTO relogio(acao, indicacao, fkrelogio) VALUES ('$acao','$indicacao',(select idplantas from plantas, flora where fkplantas=idflora and nomeflora='" . $nomeflora . "'));";
         $r = mysqli_multi_query($conn, $resultado);
         header("Location: relogio_cad.php?erro=2");
     } else {

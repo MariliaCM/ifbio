@@ -65,6 +65,10 @@ if ($btnCadPancs) {
     $resultado_flora = mysqli_query($conn, $sqlflora);
     $numero_linhasflora = mysqli_num_rows($resultado_flora);
 
+    $sqlpancs = "SELECT idflora, fkpancs FROM flora, pancs WHERE nomeflora='" . $nomeflora . "' AND idflora=fkpancs";
+    $resultado_pancs = mysqli_query($conn, $sqlpancs);
+    $numero_linhaspancs = mysqli_num_rows($resultado_pancs);
+
     if (($numero_linhasf == 0)) {
         $resultado = "INSERT INTO filo(nomefilo,fkfilo) VALUES ('$nomefilo','6');";
         $r = mysqli_query($conn, $resultado);
@@ -98,9 +102,16 @@ if ($btnCadPancs) {
 
     if (($numero_linhasflora == 0)) {
 
-        $resultado = "INSERT INTO flora(nomeflora,fkflora) VALUES ('$nomeflora',(select idespecie from especie where nomeespecie='" . $nomeespecie . "'));
-    INSERT INTO pancs(usopopular, contraindicacao, uso, cultivo, parte, indicacao, fkpancs) VALUES ('$usopopular','$contraindicacao','$uso','$cultivo','$parte','$indicacao',(select idflora from flora where nomeflora='" . $nomeflora . "'));";
-        $r = mysqli_multi_query($conn, $resultado);
+        $resultado = "INSERT INTO flora(nomeflora,fkflora) VALUES ('$nomeflora',(select idespecie from especie where nomeespecie='" . $nomeespecie . "'));";
+        $r = mysqli_query($conn, $resultado);
+        
+    }
+
+    if (($numero_linhaspancs == 0)) {
+
+        $resultado = "INSERT INTO pancs(usopopular, contraindicacao, uso, cultivo, parte, indicacao, fkpancs) VALUES ('$usopopular','$contraindicacao','$uso','$cultivo','$parte','$indicacao',(select idflora from flora where nomeflora='" . $nomeflora . "'));";
+        $r = mysqli_query($conn, $resultado);
+        
         header("Location: pancs_cad.php?erro=2");
     } else {
         header("Location: pancs_cad.php?erro=1");
